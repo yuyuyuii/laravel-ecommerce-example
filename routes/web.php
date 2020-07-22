@@ -7,6 +7,9 @@ Route::get('/shop/{product}', 'ShopController@show')->name('shop.show');
 // Route::view('/product', 'product');
 Route::get('/cart', 'CartController@index')->name('cart.index');
 Route::post('/cart', 'CartController@store')->name('cart.store');
+//商品を１つだけ削除
+Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
+
 //カート内削除
 Route::get('/empty', function(){
   Cart::destroy();  
