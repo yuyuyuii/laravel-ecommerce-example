@@ -52,7 +52,14 @@
                     </div>
                     <div class="cart-table-row-right">
                         <div class="cart-table-actions">
-                            <a href="/empty">Remove</a> <br>
+                            <!-- <a href="#">Remove</a> <br> -->
+                            <!-- <form action="{{ route('cart.destroy', $item->model->id) }}" method="post"> これだとカートに入れた商品IDが取れない--> 
+                            <?php //dd($item); rowIdって言う文字列が追加されているから、それを指定しないと削除できない感じ?>
+                            <form action="{{ route('cart.destroy', $item->rowId) }}" method="post">
+                              {{ csrf_field() }}
+                              {{ method_field('delete') }}
+                            <button type="submit" class="cart-options">remove</button>
+                            </form>
                             <a href="#">Save for Later</a>
                         </div>
                         <div>
@@ -104,6 +111,11 @@
             </div>
             @else
               <h3>no items in cart! </h3>
+
+              <div class='spacer'></div>
+              <a href="{{ route('shop.index')}}" class="button">Continue Shopping</a>
+              <div class='spacer'></div>
+
             @endif
             <h2>2 items Saved For Later</h2>
 
