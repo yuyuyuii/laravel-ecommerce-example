@@ -6,7 +6,15 @@
             <li><a href="{{ route('shop.index') }}">Shop</a></li>
             <li><a href="#">About</a></li>
             <li><a href="#">Blog</a></li>
-            <li><a href="{{ route('cart.index') }}">Cart <span class="cart-count"><span>{{ Cart::count() }}</span></span></a></li>
+            <!-- <li><a href="{{ route('cart.index') }}">Cart <span class="cart-count"><span>{{ Cart::count() }}</span></span></a></li> -->
+            <li>
+              <a href="{{ route('cart.index') }}">Cart <span class="cart-count">
+                <!-- カートの中身が0だったら非表示にする -->
+                @if(Cart::instance('default')->count() > 0)
+                  <span>{{ Cart::instance('default')->count() }}</span></span>
+                @endif
+              </a>
+            </li>
         </ul>
         @endif
     </div> <!-- end top-nav -->
