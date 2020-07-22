@@ -42,12 +42,15 @@ class ShopController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  string  $slug //$idから$slugに変更
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        //
+      // 商品詳細ページ
+      // $product = Product::find($slug);
+      $product = Product::where('slug', $slug)->firstOrFail();
+      return view('product')->with('product', $product);
     }
 
     /**
