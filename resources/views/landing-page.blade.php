@@ -21,7 +21,7 @@
             <div class="top-nav container">
                 <div class="logo">Laravel Ecommerce</div>
                 <ul>
-                    <li><a href="{{ route('shop') }}">Shop</a></li>
+                    <li><a href="{{ route('shop.index') }}">Shop</a></li>
                     <li><a href="#">About</a></li>
                     <li><a href="#">Blog</a></li>π
                     <li><a href="#">Cart <span class="cart-count"><span>3</span></span></a></li>
@@ -75,7 +75,7 @@
                 </div> <!-- end products -->
 
                 <div class="text-center button-container">
-                    <a href="#" class="button">View more products</a>
+                    <a href="{{ route('shop.index') }}" class="button">View more products</a>
                 </div>
 
             </div> <!-- end container -->
