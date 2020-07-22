@@ -28,7 +28,8 @@
                       <a href="{{ route('cart.index') }}">Cart <span class="cart-count">
                         <!-- カートの中身が0だったら非表示にする -->
                         @if(Cart::instance('default')->count() > 0)
-                          <span>{{ Cart::instance('default')->count() }}</span></span>
+                          <span>{{ Cart::instance('default')->content()->count() }}</span></span>
+                          <!-- instance('default')はインスタンスを使用しない感じの意味。とりあえず個数を数えるやつ-->
                         @endif
                       </a>
                     </li>
