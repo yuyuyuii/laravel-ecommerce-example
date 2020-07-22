@@ -36,20 +36,23 @@
               </div>
             @endif
 
-            <h2>3 items in Shopping Cart</h2>
+            @if(Cart::count() > 0)
+              <h2>{{ Cart::count()}} item(s) in Shopping Cart</h2>
+
 
             <div class="cart-table">
+              @foreach( Cart::content() as $item)
                 <div class="cart-table-row">
                     <div class="cart-table-row-left">
-                        <a href="#"><img src="/img/macbook-pro.png" alt="item" class="cart-table-img"></a>
+                        <a href="{{ route('shop.show', $item->model->slug) }}"><img src="/img/macbook-pro.png" alt="item" class="cart-table-img"></a> <!-- $item->model->name でmodelを指定して値が取得できる-->
                         <div class="cart-item-details">
-                            <div class="cart-table-item"><a href="#">MacBook Pro</a></div>
-                            <div class="cart-table-description">15 inch, 1TB SSD, 32GB RAM</div>
+                            <div class="cart-table-item"><a href="{{ route('shop.show', $item->model->slug) }}">{{ $item->model->name }}</a></div>
+                            <div class="cart-table-description">{{ $item->model->details }}</div>
                         </div>
                     </div>
                     <div class="cart-table-row-right">
                         <div class="cart-table-actions">
-                            <a href="#">Remove</a> <br>
+                            <a href="/empty">Remove</a> <br>
                             <a href="#">Save for Later</a>
                         </div>
                         <div>
@@ -61,62 +64,10 @@
                                 <option>5</option>
                             </select>
                         </div>
-                        <div>$2499.99</div>
+                        <div>{{ $item->model->presentPrice() }}</div>
                     </div>
                 </div> <!-- end cart-table-row -->
-
-                <div class="cart-table-row">
-                    <div class="cart-table-row-left">
-                        <a href="#"><img src="/img/macbook-pro.png" alt="item" class="cart-table-img"></a>
-                        <div class="cart-item-details">
-                            <div class="cart-table-item"><a href="#">MacBook Pro</a></div>
-                            <div class="cart-table-description">15 inch, 1TB SSD, 32GB RAM</div>
-                        </div>
-                    </div>
-                    <div class="cart-table-row-right">
-                        <div class="cart-table-actions">
-                            <a href="#">Remove</a> <br>
-                            <a href="#">Save for Later</a>
-                        </div>
-                        <div>
-                            <select class="quantity">
-                                <option selected="">1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                        <div>$2499.99</div>
-                    </div>
-                </div> <!-- end cart-table-row -->
-
-                <div class="cart-table-row">
-                    <div class="cart-table-row-left">
-                        <a href="#"><img src="/img/macbook-pro.png" alt="item" class="cart-table-img"></a>
-                        <div class="cart-item-details">
-                            <div class="cart-table-item"><a href="#">MacBook Pro</a></div>
-                            <div class="cart-table-description">15 inch, 1TB SSD, 32GB RAM</div>
-                        </div>
-                    </div>
-                    <div class="cart-table-row-right">
-                        <div class="cart-table-actions">
-                            <a href="#">Remove</a> <br>
-                            <a href="#">Save for Later</a>
-                        </div>
-                        <div>
-                            <select class="quantity">
-                                <option selected="">1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
-                            </select>
-                        </div>
-                        <div>$2499.99</div>
-                    </div>
-                </div> <!-- end cart-table-row -->
-
+              @endforeach
             </div> <!-- end cart-table -->
 
             <a href="#" class="have-code">Have a Code?</a>
@@ -151,7 +102,9 @@
                 <a href="#" class="button">Continue Shopping</a>
                 <a href="#" class="button-primary">Proceed to Checkout</a>
             </div>
-
+            @else
+              <h3>no items in cart! </h3>
+            @endif
             <h2>2 items Saved For Later</h2>
 
             <div class="saved-for-later cart-table">
@@ -168,6 +121,7 @@
                             <a href="#">Remove</a> <br>
                             <a href="#">Save for Later</a>
                         </div>
+
                         {{-- <div>
                             <select class="quantity">
                                 <option selected="">1</option>
