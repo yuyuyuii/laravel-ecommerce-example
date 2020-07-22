@@ -2,26 +2,14 @@
     <div class="container">
         <h2>You might also like...</h2>
         <div class="might-like-grid">
-            <a href="#" class="might-like-product">
+          @foreach( $mightAlsoLikes as $mightAlsoLike)
+            <a href="{{ route('shop.show', $mightAlsoLike->slug) }}" class="might-like-product">
                 <img src="{{ asset('img/macbook-pro.png') }}" alt="product">
-                <div class="might-like-product-name">MacBook Pro</div>
-                <div class="might-like-product-price">$2499.99</div>
+                <div class="might-like-product-name">{{ $mightAlsoLike->name }}</div>
+                <div class="might-like-product-price">{{ $mightAlsoLike->presentPrice() }}</div>
             </a>
-            <a href="#" class="might-like-product">
-                <img src="{{ asset('img/macbook-pro.png') }}" alt="product">
-                <div class="might-like-product-name">MacBook Pro</div>
-                <div class="might-like-product-price">$2499.99</div>
-            </a>
-            <a href="#" class="might-like-product">
-                <img src="{{ asset('img/macbook-pro.png') }}" alt="product">
-                <div class="might-like-product-name">MacBook Pro</div>
-                <div class="might-like-product-price">$2499.99</div>
-            </a>
-            <a href="#" class="might-like-product">
-                <img src="{{ asset('img/macbook-pro.png') }}" alt="product">
-                <div class="might-like-product-name">MacBook Pro</div>
-                <div class="might-like-product-price">$2499.99</div>
-            </a>
+          @endforeach 
+
         </div>
     </div>
 </div>
