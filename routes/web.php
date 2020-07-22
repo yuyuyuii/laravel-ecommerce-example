@@ -1,6 +1,7 @@
 <?php
 
-Route::view('/', 'main');
+// Route::view('/', 'landing-page');
+Route::get('/', 'LandingPageController@index');
 Route::view('/products', 'products');
 Route::view('/product', 'product');
 Route::view('/cart', 'cart');
