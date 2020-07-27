@@ -51,7 +51,8 @@ class ShopController extends Controller
       // $product = Product::find($slug);
       $product = Product::where('slug', $slug)->firstOrFail();
       //page下のレコメンド
-      $mightAlsoLikes = Product::where('slug', '!=', $slug)->inRandomOrder()->take(4)->get(); //現在取得しているslug以外でランダムで4つ取得
+      // $mightAlsoLikes = Product::where('slug', '!=', $slug)->inRandomOrder()->take(4)->get(); //現在取得しているslug以外でランダムで4つ取得
+      $mightAlsoLikes = Product::where('slug', '!=', $slug)->mightAlsoLike()->get(); //作成した関数に変更
       return view('product')->with([ //配列で渡すときは、カンマ区切りではなく=>を使う
         'product' => $product,
         'mightAlsoLikes' => $mightAlsoLikes,
