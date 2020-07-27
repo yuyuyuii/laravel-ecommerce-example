@@ -10,4 +10,10 @@ class Product extends Model
   {
     return money_format('$%i', $this->price / 100); //14999 -> $149.99
   }
+
+  // レコメンドをメソッド化
+  public function scopeMightAlsoLike($query)
+  {
+    return $query->inRandomOrder()->take(4);
+  }
 }
