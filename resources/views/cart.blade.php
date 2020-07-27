@@ -94,16 +94,19 @@
                 <div class="cart-totals-right">
                     <div>
                         Subtotal <br>
-                        Tax <br>
+                        Tax(10%) <br>
                         <span class="cart-totals-total">Total</span>
                     </div>
                     <div class="cart-totals-subtotal">
                     <!-- カート内のすべてのアイテムの合計から、税金の合計額を差し引いて取得 -->
-                        {{Cart::subtotal() / 100 }} <br>
+                        <!-- //{{Cart::subtotal() / 100 }} <br> ヘルパーを作成し、関数化-->
+                        {{ presentPrice(Cart::subtotal()) }} <br>
                         <!-- 価格と数量を指定して、カート内のすべてのアイテムの計算された税額を取得。プラスされる税金 -->
-                        {{Cart::tax() / 100 }} <br>
+                        <!-- //{{Cart::tax() / 100 }} <br> -->
+                        {{ presentPrice(Cart::tax()) }} <br>
                         <!-- 価格と数量を指定して、カート内のすべてのアイテムの計算された合計を取得。税込価格 -->
-                        <span class="cart-totals-total">{{ Cart::total() / 100 }}</span>
+                        <!-- <span class="cart-totals-total">//{{ Cart::total() /100 }}</span> -->
+                        <span class="cart-totals-total">{{ presentPrice(Cart::total()) }}</span>
                     </div>
                 </div>
             </div> <!-- end cart-totals -->
