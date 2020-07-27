@@ -9,10 +9,13 @@ Route::get('/cart', 'CartController@index')->name('cart.index');
 Route::post('/cart', 'CartController@store')->name('cart.store');
 //商品を１つだけ削除
 Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
+//欲しいものリスト
+Route::post('/cart/switchToSaveForLater/{product}', 'CartController@switchToSaveForLater')->name('cart.switchToSaveForLater');
 
 //カート内削除
 Route::get('/empty', function(){
-  Cart::destroy();  
+  // Cart::destroy();  
+  Cart::instance('saveForLater')->destroy();  
 });
 
 // Route::view('/cart', 'cart');

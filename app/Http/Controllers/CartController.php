@@ -98,4 +98,32 @@ class CartController extends Controller
       // return redirect()->route('cart.index')->with('seccess_message', '商品を削除しました！');
       return back()->with('success_message', '商品を削除しました！');
     }
+    /**
+     * Switch item for shopping cart to Save for later.
+     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function switchToSaveForLater($id)
+    {
+      //欲しいものリストに入れる商品IDをカート内から取得
+      $item = Cart::get($id);
+      // 取得したらカート内から削除(欲しいものリストに移動させるイメージ)
+      Cart::remove($id);
+
+      $dupulicates = Cart::instance('saveForLater')->search(function ($cartItem, $rowId) use ($id){
+        return $rowId === $id;
+      });
+
+      //もし欲しいものリスト内に同じ商品があったら
+      if($dupulicates->isNotEmpty()){
+        return redirect()->route('cart.index')->with('success_message', 'Item is already in your cart!');
+      }      
+
+      Cart::instance('saveForLater')->add($item->id, $item->name, 1,$item->price)
+          ->associate('App\Product');
+
+      return redirect()->route('cart.index')->with('success_message', 'Item has been Saved For Later!');
+    }
+
 }
