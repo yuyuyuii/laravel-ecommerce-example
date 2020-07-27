@@ -12,6 +12,9 @@ Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy')
 //欲しいものリスト
 Route::post('/cart/switchToSaveForLater/{product}', 'CartController@switchToSaveForLater')->name('cart.switchToSaveForLater');
 
+Route::delete('/saveForlater/{product}', 'saveForlaterController@destroy')->name('saveForlater.destroy');
+Route::post('/saveForlater/switchToCart/{product}', 'saveForlaterController@switchToCart')->name('saveForlater.switchToCart');
+
 //カート内削除
 Route::get('/empty', function(){
   // Cart::destroy();  
