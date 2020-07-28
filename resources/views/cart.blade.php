@@ -67,15 +67,15 @@
                             </form>
                         </div>
                         <div>
-                            <select class="quantity">
-                                <option selected="">1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select class="quantity" data-id="{{ $item->rowId }}"><!-- data属性に商品IDを指定するとJSで商品IDが取れるようになる-->
+                            @for($i = 1; $i <= 5; $i++)
+                              <option {{ $item->qty == $i ? 'selected' : '' }}>{{ $i }} </option>
+                            @endfor
                             </select>
                         </div>
-                        <div>{{ $item->model->presentPrice() }}</div>
+                        <!-- <div>//{{ $item->model->presentPrice() }}</div> -->
+                        <!-- 個数を変更したら値段も変更される -->
+                        <div>{{ presentPrice($item->subtotal)}}</div>
                     </div>
                 </div> <!-- end cart-table-row -->
               @endforeach
@@ -185,5 +185,37 @@
 
     @include('partials.might-like')
 
+
+@endsection
+
+@section('extra-js')
+<!-- axiosを使うためにimport -->
+<script src="{{ asset('js/app.js') }}"></script>
+<script>
+  (function(){
+    //カート内の商品の個数のselectorを配列で全て取得
+    const classname = document.querySelectorAll('.quantity');
+    Array.from(classname).forEach(function(element){
+      //.quantityの値が変化したら
+      element.addEventListener('change', function(){
+        // alert('change');
+        //商品IDを取得
+        const id = element.getAttribute('data-id');
+        axios.patch(`/cart/${id}`, {
+          quantity: this.value //quantityの値
+        })
+        .then(function (response) {
+          // console.log(response);
+          window.location.href = '{{ route('cart.index') }}'
+        })
+        .catch(function (error) {
+          console.log(error);
+          window.location.href = '{{ route('cart.index') }}'
+        });
+      })
+    })
+
+  })();
+</script>
 
 @endsection

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use Gloudemans\Shoppingcart\Facades\Cart; //コンポーザーで入れたshoppingcartのライブラリ
+use Illuminate\Support\Facades\Validator;
 class CartController extends Controller
 {
     /**
@@ -83,7 +84,19 @@ class CartController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+      //個数のバリデーション
+      $validator = Validator::make($request->all(),[
+        'quantity' => 'required|numeric|between:1,5',
+      ]);
+      if($validator){
+        session()->flash('errors', collect(['1個から5個の間で選んでください。']));
+        return response()->json(['success' => false], 400);
+      }
+      //カート内で商品の個数が変更されたら
+      Cart::update($id, $request->quantity);
+      session()->flash('success_message', '個数を変更しました！');
+
+      return response()->json(['success' => true]);
     }
 
     /**
