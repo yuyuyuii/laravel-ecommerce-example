@@ -9,6 +9,9 @@ Route::get('/cart', 'CartController@index')->name('cart.index');
 Route::post('/cart', 'CartController@store')->name('cart.store');
 //商品を１つだけ削除
 Route::delete('/cart/{product}', 'CartController@destroy')->name('cart.destroy');
+//カート内に入れた商品の個数を更新
+Route::patch('/cart/{product}', 'CartController@update')->name('cart.update');
+
 //欲しいものリスト
 Route::post('/cart/switchToSaveForLater/{product}', 'CartController@switchToSaveForLater')->name('cart.switchToSaveForLater');
 
