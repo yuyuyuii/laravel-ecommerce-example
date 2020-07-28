@@ -22,5 +22,8 @@ Route::get('/empty', function(){
 });
 
 // Route::view('/cart', 'cart');
-Route::view('/checkout', 'checkout');
+// 決済画面
+Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
+Route::post('/checkout', 'CheckoutController@store')->name('checkout.store');
+// Route::view('/checkout', 'checkout');
 Route::view('/thankyou', 'thankyou');
