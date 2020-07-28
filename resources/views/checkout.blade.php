@@ -119,7 +119,7 @@
 
                     <div class="spacer"></div>
 
-                    <button type="submit" class="button-primary full-width">Complete Order</button>
+                    <button type="submit" id="complete-order" class="button-primary full-width">Complete Order</button>
 
 
                 </form>
@@ -224,7 +224,8 @@
     var form = document.getElementById('payment-form');
     form.addEventListener('submit', function(event) {
       event.preventDefault();
-      
+      // 一回送信ボタンを押したら送信ボタンを押せなくする。二度押し防止
+      document.getElementById('complete-order').disabled = true;
       //フォームのユーザー情報を取得
       var options = {
         name: document.getElementById('name_on_card').value,
@@ -239,6 +240,9 @@
           // Inform the user if there was an error.
           var errorElement = document.getElementById('card-errors');
           errorElement.textContent = result.error.message;
+          // 通信が成功したら押せるようにする
+          documemt.getElementedById('complete-order').disabled = false;
+
         } else {
           // Send the token to your server.
           stripeTokenHandler(result.token);

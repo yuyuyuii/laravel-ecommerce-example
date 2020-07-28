@@ -39,6 +39,10 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
+      $contents = Cart::content()->map(function($item){
+        return $item->model->slug. ','.$item->qty;
+      })->values()->toJson();
+
         try {
             $charge = Stripe::charges()->create([
                 'amount' => Cart::total() / 100,
@@ -47,16 +51,19 @@ class CheckoutController extends Controller
                 'description' => 'Order',
                 'receipt_email' => $request->email,
                 'metadata' => [
+                  //stripeの管理画面のmeta-dataへ登録する項目。登録しないのであれば、追加する必要はない
                     //change to Order ID after we start using DB
-                    // 'contents' => $contents,
-                    // 'quantity' => Cart::instance('default')->count(),
+                    'contents' => $contents,
+                    'quantity' => Cart::instance('default')->count(),
                 ], 
             ]);
 
-        // 成功したら
-        return back()->with('success_message', '決済完了しました！');
-      } catch (Exception $e) {
-        
+        // 成功したらカートの中身を削除し、決済完了画面へ
+        Cart::instance('default')->destroy();
+        // return back()->with('success_message', '決済完了しました！');
+        return redirect()->route('confirmation.index')->with('success_message','決済完了しました！' );
+      } catch (CardErrorException $e) {
+        return back()->withErrors('Error!'.$e->getMessage());
       }
     }
 

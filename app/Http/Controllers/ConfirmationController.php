@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class CofirmationController extends Controller
+class ConfirmationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +13,10 @@ class CofirmationController extends Controller
      */
     public function index()
     {
-        //
+      if(! session()->has('success_message')){
+        return redirect('/');
+      }
+      return view('thankyou');
     }
 
     /**
