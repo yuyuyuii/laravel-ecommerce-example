@@ -14,7 +14,7 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-      $products = Product::inRandomOrder()->take(8)->get();//Productからランダムで8個取得
+      $products = Product::where('featured', true)->take(8)->inRandomOrder()->get();//Productからpickup商品をランダムで8個取得
       return view('landing-page')->with('products', $products);
       // return view('landing-page', compact('products'));
     }
