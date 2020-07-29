@@ -11,6 +11,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(CategoriesTableSeeder::class); //categoriesテーブルを登録
         $this->call(ProductsTableSeeder::class); //productseederを登録
     }
 }

@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('details')->nullable();// 短い説明nullを許可
             $table->integer('price');//価格
             $table->text('description');//商品説明
+            $table->boolean('featured')->default(false);//pickup商品フラグ
             $table->timestamps();
         });
     }
