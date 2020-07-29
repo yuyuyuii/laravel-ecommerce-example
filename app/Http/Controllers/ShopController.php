@@ -14,27 +14,30 @@ class ShopController extends Controller
      */
     public function index()
     {
+      $pagination = 9;
+      $categories = Category::all();
+
       if(request()->category){ //viewから送られてきたら、categoryのslugが取得できる
         $products = Product::with('categories')->whereHas('categories', function($query) { //テーブル結合してviewから送られてきたslug名がDBと一致するものを取得し、返却。
           $query->where('slug', request()->category);
-        })->get();
-        $categories = Category::all();
+        });
         //shop画面から送られてきたカテゴリ名を使ってカテゴリの中からslugの名前を取得。
-        $categoryName =$categories->where('slug', request()->category)->first()->name;
+        $categoryName =optional($categories->where('slug', request()->category)->first())->name;
 
       }else{
       //ランディングページを同じものを表示
-      $products = Product::inRandomOrder()->take(12)->get(); 
-      //カテゴリの一覧を表示
-      $categories = Category::all();
+      // $products = Product::take(12); //初期ページは1ページに12こ取得し、表示
+      $products = Product::where('featured', true); //初期ページは1ページに12こ取得し、表示
       $categoryName = 'Featured';
       }
 
       //値段ソート
       if(request()->sort == 'low_high'){ 
-        $products = $products->sortBy('price'); //低い順
+        $products = $products->orderBy('price')->paginate($pagination); //低い順で9個取得し表示する
       }elseif(request()->sort == 'high_low'){
-        $products = $products->sortByDesc('price'); //高い順
+        $products = $products->orderBy('price', 'desc')->paginate($pagination); //高い順で9個取得し表示する
+      }else{
+        $products = $products->paginate($pagination);
       }
 
       return view('shop')->with([

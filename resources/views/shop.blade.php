@@ -21,7 +21,8 @@
             <h3>By Category</h3>
             <ul>
               @foreach($categories as $category)
-                <li><a href="{{ route('shop.index', [ 'category' => $category->slug]) }}">{{ $category->name }}</a></li>
+                <!-- <li class="{{ request()->category == $category->slug ? 'active' : '' }}"><a href="{{ route('shop.index', [ 'category' => $category->slug]) }}">{{ $category->name }}</a></li> --> 
+                <li class="{{ setActiveCategory($category->slug) }}"><a href="{{ route('shop.index', [ 'category' => $category->slug]) }}">{{ $category->name }}</a></li> <!-- helper.phpに記載し、メソッド化する事ですっきりする感じ-->
               @endforeach
             </ul>
 
@@ -54,6 +55,10 @@
                 <div style="text-align:left">商品が見つかりません</div>
               @endforelse
             </div> <!-- end products -->
+            <!-- //{{ $products->links() }} -->
+            <!-- ページを移動するとソートがリセットされてしまうので、以下に変更 -->
+            {{ $products->appends(request()->input())->links() }}
+
         </div>
     </div>
 
