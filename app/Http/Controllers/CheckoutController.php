@@ -19,7 +19,19 @@ class CheckoutController extends Controller
      */
     public function index()
     {
-      return view('checkout');
+      // $tax = config('cart.tax') / 100; //10 / 100 = 0.10
+      // $discount = session()->get('coupon')['discount'] ?? 0; //クーポンがあればその額、なければ0
+      // $newSubtotal = (Cart::subtotal() - $discount); //カートの中身から割引額を引く
+      // $newTax = $newSubtotal * $tax; //割引した額の税金を取得
+      // $newTotal = $newSubtotal * (1 + $tax);//割引した本体価格に割引後の税金をかける *1.10
+      
+      // 上のやつをprivateメソッドにしてリファクタリング
+      return view('checkout')->with([
+        'discount' => $this->getNumbers()->get('discount'),//下に定義privateメソッド経由から取得する
+        'newSubTotal' => $this->getNumbers()->get('newSubTotal'),
+        'newTotal' => $this->getNumbers()->get('newTotal'),
+        'newTax' => $this->getNumbers()->get('newTax'),
+        ]);
     }
 
     /**
@@ -46,7 +58,8 @@ class CheckoutController extends Controller
 
         try {
             $charge = Stripe::charges()->create([
-                'amount' => Cart::total() / 100,
+                // 'amount' => Cart::total() / 100,
+                'amount' => $this->getNumbers()->get('newTotal') / 100, //クーポン機能に対応させる
                 'currency' => 'CAD',
                 'source' => $request->stripeToken,
                 'description' => 'Order',
@@ -56,11 +69,14 @@ class CheckoutController extends Controller
                     //change to Order ID after we start using DB
                     'contents' => $contents,
                     'quantity' => Cart::instance('default')->count(),
+                    'discount' => collect(session()->get('coupon'))->toJson(), //クーポン情報を追加
                 ], 
             ]);
 
         // 成功したらカートの中身を削除し、決済完了画面へ
         Cart::instance('default')->destroy();
+        //使用したクーポンコードも削除
+        session()->forget('coupon');
         // return back()->with('success_message', '決済完了しました！');
         return redirect()->route('confirmation.index')->with('success_message','決済完了しました！' );
       } catch (CardErrorException $e) {
@@ -111,5 +127,22 @@ class CheckoutController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function getNumbers()
+    {
+      $tax = config('cart.tax') / 100; //10 / 100 = 0.10 config/cart.phpのtaxの値
+      $discount = session()->get('coupon')['discount'] ?? 0; //クーポンがあればその額、なければ0
+      $newSubtotal = (Cart::subtotal() - $discount); //カートの中身(本体額)から割引額を引く
+      $newTax = $newSubtotal * $tax; //割引した額の税金を取得
+      $newTotal = $newSubtotal * (1 + $tax);//割引した本体価格に割引後の税金をかける *1.10
+
+      return collect([
+        'tax' => $tax,
+        'discount' => $discount,
+        'newSubTotal' => $newSubtotal,
+        'newTax' => $newTax,
+        'newTotal' => $newTotal,
+      ]);
     }
 }
