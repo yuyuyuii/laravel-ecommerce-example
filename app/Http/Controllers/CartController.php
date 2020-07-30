@@ -88,7 +88,7 @@ class CartController extends Controller
       $validator = Validator::make($request->all(),[
         'quantity' => 'required|numeric|between:1,5',
       ]);
-      if($validator){
+      if($validator->fails()){
         session()->flash('errors', collect(['1個から5個の間で選んでください。']));
         return response()->json(['success' => false], 400);
       }
