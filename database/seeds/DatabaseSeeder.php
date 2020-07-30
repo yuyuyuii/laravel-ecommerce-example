@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CategoriesTableSeeder::class); //categoriesテーブルを登録
         $this->call(ProductsTableSeeder::class); //productseederを登録
+        $this->call(CouponsTableSeeder::class); //couponseederを登録
     }
 }

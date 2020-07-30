@@ -81,14 +81,15 @@
               @endforeach
             </div> <!-- end cart-table -->
 
-            <a href="#" class="have-code">Have a Code?</a>
+            <!-- <a href="#" class="have-code">Have a Code?</a>
 
             <div class="have-code-container">
-                <form action="#">
-                    <input type="text">
+                <form action="{{ route('coupon.store') }}" method="post">
+                  //{{ csrf_field() }}
+                    <input type="text" name="coupon_code" id="coupon_code">
                     <button type="submit" class="button button-plain">Apply</button>
                 </form>
-            </div> <!-- end have-code-container -->
+            </div> end have-code-container -->
 
             <div class="cart-totals">
                 <div class="cart-totals-left">
@@ -205,7 +206,7 @@
           quantity: this.value //quantityの値
         })
         .then(function (response) {
-          // console.log(response);
+          console.log(response);
           window.location.href = '{{ route('cart.index') }}'
         })
         .catch(function (error) {
