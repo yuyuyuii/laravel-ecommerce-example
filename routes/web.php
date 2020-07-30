@@ -24,6 +24,10 @@ Route::get('/empty', function(){
   Cart::instance('saveForLater')->destroy();  
 });
 
+//coupon
+Route::post('/coupon', 'CouponsController@store')->name('coupon.store'); //coupon使用
+Route::delete('/coupon', 'CouponsController@destroy')->name('coupon.destroy');
+
 // Route::view('/cart', 'cart');
 // 決済画面
 Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
