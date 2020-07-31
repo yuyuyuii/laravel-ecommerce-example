@@ -27,7 +27,7 @@
             <div class="product-section-subtitle">{{ $product->details }}</div>
             <div class="product-section-price">{{ $product->presentPrice() }}</div>
 
-            <p> {{ $product->description }} </p>
+            <p> {!! $product->description !!} </p>
 
             <p>&nbsp;</p>
 
