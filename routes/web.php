@@ -35,3 +35,8 @@ Route::post('/checkout', 'CheckoutController@store')->name('checkout.store');
 // Route::view('/checkout', 'checkout');
 Route::get('/thankyou', 'ConfirmationController@index')->name('confirmation.index');
 // Route::view('/thankyou', 'thankyou');
+
+
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+});
