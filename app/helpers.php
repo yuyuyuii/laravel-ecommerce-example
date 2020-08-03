@@ -12,11 +12,11 @@ function setActiveCategory($category, $output = 'active')
 
 function productImage($path)
   {
-    // return file_exists('storage/'.$path) ? asset('storage/'.$path) : asset('img/noimage.png'); //
-    if($path) 
-      return  asset('storage/'.$path);
-    else
-      return asset('img/noimage.png');
+    return $path  && file_exists('storage/'.$path) ? asset('storage/'.$path) : asset('img/noimage.png'); //
+    // if($path) 
+    //   return  asset('storage/'.$path);
+    // else
+    //   return asset('img/noimage.png');
   }
 
 ?>
