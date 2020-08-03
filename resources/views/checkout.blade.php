@@ -134,11 +134,12 @@
                   @foreach(Cart::content() as $item)
                     <div class="checkout-table-row">
                         <div class="checkout-table-row-left">
-                          @if($item->model->image)
+                          <!-- @if($item->model->image)
                             <img src="{{ asset('storage/'. $item->model->image) }}" alt="product">
                           @else
                             <img src="{{asset('img/noimage.png') }}" alt="product">
-                          @endif
+                          @endif -->
+                          <img src="{{ productImage($item->model->image) }}" alt="" srcset="">
                             <div class="checkout-item-details">
                                 <div class="checkout-table-item">{{ $item->model->name }}</div>
                                 <div class="checkout-table-description">{{ $item->model->details }}</div>

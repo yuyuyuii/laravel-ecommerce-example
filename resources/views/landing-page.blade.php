@@ -76,11 +76,12 @@
                   @foreach ($products as $product)
                     <div class="product">
                         <a href="{{ route('shop.show', $product->slug) }}">
-                          @if($product->image)
+                          <!-- @if($product->image)
                             <img src="{{ asset('storage/'. $product->image) }}" alt="product">
                           @else
                             <img src="{{asset('img/noimage.png') }}" alt="product">
-                          @endif
+                          @endif -->
+                        <img src="{{ productImage($product->image) }}" alt="" srcset="">
                         </a>
                         <a href="{{ route('shop.show', $product->slug) }}"><div class="product-name">{{ $product->name }}</div></a>
                         <div class="product-price">{{ $product->presentPrice() }}</div>

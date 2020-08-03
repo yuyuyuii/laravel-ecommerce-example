@@ -21,11 +21,12 @@
     <div class="product-section container">
         <div class="product-section-image">
             <!-- <img src="{{ asset('img/macbook-pro.png') }}" alt="product"> -->
-            @if($product->image) 
+            <!-- @if($product->image) 
               <img src="{{ asset('storage/'. $product->image) }}" alt="product">
             @else
               <img src="{{asset('img/noimage.png') }}" alt="product">
-            @endif
+            @endif -->
+            <img src="{{ productImage($product->image) }}" alt="" srcset="">
         </div>
         <div class="product-section-information">
             <h1 class="product-section-title">{{ $product->name }}</h1>
