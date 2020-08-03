@@ -44,7 +44,14 @@
               @foreach( Cart::content() as $item)
                 <div class="cart-table-row">
                     <div class="cart-table-row-left">
-                        <a href="{{ route('shop.show', $item->model->slug) }}"><img src="/img/macbook-pro.png" alt="item" class="cart-table-img"></a> <!-- $item->model->name でmodelを指定して値が取得できる-->
+                        <a href="{{ route('shop.show', $item->model->slug) }}"><!-- $item->model->name でmodelを指定して値が取得できる-->
+                          <!-- @if($item->model->image)
+                            <img src="{{ asset('storage/'. $item->model->image) }}" alt="product">
+                          @else
+                            <img src="{{asset('img/noimage.png') }}" alt="product">
+                          @endif -->
+                        <img src="{{ productImage($item->model->image) }}" alt="" srcset="">
+                        </a> 
                         <div class="cart-item-details">
                             <div class="cart-table-item"><a href="{{ route('shop.show', $item->model->slug) }}">{{ $item->model->name }}</a></div>
                             <div class="cart-table-description">{{ $item->model->details }}</div>
