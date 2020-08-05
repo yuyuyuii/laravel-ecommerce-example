@@ -19,21 +19,13 @@
     <body>
         <header class="with-background">
             <div class="top-nav container">
+              <div class="top-nav-left">
                 <div class="logo">Laravel Ecommerce</div>
-                <ul>
-                    <li><a href="{{ route('shop.index') }}">Shop</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li>
-                      <a href="{{ route('cart.index') }}">Cart <span class="cart-count">
-                        <!-- カートの中身が0だったら非表示にする -->
-                        @if(Cart::instance('default')->count() > 0)
-                          <span>{{ Cart::instance('default')->content()->count() }}</span></span>
-                          <!-- instance('default')はインスタンスを使用しない感じの意味。とりあえず個数を数えるやつ-->
-                        @endif
-                      </a>
-                    </li>
-                </ul>
+                @include('partials.menus.main')      
+              </div>
+              <div class="top-nav-right">
+                @include('partials.menus.main-right')      
+              </div>
             </div> <!-- end top-nav -->
             <div class="hero container">
                 <div class="hero-copy">
