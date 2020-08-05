@@ -58,6 +58,8 @@
                                 <a class="btn btn-link" href="{{ route('password.request') }}">
                                     Forgot Your Password?
                                 </a>
+                                <!-- loginしないで購入するユーザー -->
+                                <a href="{{ route('guestCheckout.index') }}">登録しないで購入する</a>
                             </div>
                         </div>
                     </form>
