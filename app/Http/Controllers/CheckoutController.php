@@ -24,7 +24,14 @@ class CheckoutController extends Controller
       // $newSubtotal = (Cart::subtotal() - $discount); //カートの中身から割引額を引く
       // $newTax = $newSubtotal * $tax; //割引した額の税金を取得
       // $newTotal = $newSubtotal * (1 + $tax);//割引した本体価格に割引後の税金をかける *1.10
-      
+
+      if (Cart::instance('default')->count() == 0) { //カート内が空っぽだったらshop.indexへ遷移
+          return redirect()->route('shop.index');
+        }
+
+        if (auth()->user() && request()->is('guestCheckout')) {//ログインユーザーが/guestCheckoutにアクセスしたら、checkoutにリダイレクトさせる
+            return redirect()->route('checkout.index');
+        }
       // 上のやつをprivateメソッドにしてリファクタリング
       return view('checkout')->with([
         'discount' => $this->getNumbers()->get('discount'),//下に定義privateメソッド経由から取得する

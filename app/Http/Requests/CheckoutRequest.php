@@ -23,8 +23,10 @@ class CheckoutRequest extends FormRequest
      */
     public function rules()
     {
+      $emailValidation = auth()->user() ? 'required|email' : 'required|email|unique:users';
+
         return [
-            'email' => 'required|email',
+            'email' => $emailValidation,
             'name' => 'required',
             'address' => 'required',
             'city' => 'required',
@@ -32,5 +34,12 @@ class CheckoutRequest extends FormRequest
             'postalcode' => 'required',
             'phone' => 'required',
         ];
+    }
+
+    public function messages()
+    {
+      return [
+        'email.unique' => 'すでに登録されているメールアドレスです。<a href="/login">ログイン</a>してください'
+      ];
     }
 }
