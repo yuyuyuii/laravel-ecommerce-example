@@ -25,7 +25,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -35,5 +35,27 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    // AuthenticatesUsersをオーバーライドする
+    /**
+     * Show the application's login form
+     * 
+     * @return \Illuminate\Http\Response
+     */
+
+    public function showLoginForm()
+    {
+      session()->put('previousUrl', url()->previous()); //セッションにログイン画面に遷移する前のURLを取得し、previousUrlと言う名前で保存する
+      return view('auth.login');
+
+    }
+
+    public function redirectTo()
+    {
+      // loginするとこのメソッドが呼ばれる
+      // previousUrlのURLを取得確認
+      // dd(session()->get('previousUrl')); 
+      return str_replace(url('/'), '' , session()->get('previousUrl', '/'));  //previousUrlがあればURLへ、なければトップページへリダイレクト
     }
 }

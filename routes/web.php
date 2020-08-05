@@ -28,15 +28,20 @@ Route::get('/empty', function(){
 Route::post('/coupon', 'CouponsController@store')->name('coupon.store'); //coupon使用
 Route::delete('/coupon', 'CouponsController@destroy')->name('coupon.destroy');
 
-// Route::view('/cart', 'cart');
 // 決済画面
-Route::get('/checkout', 'CheckoutController@index')->name('checkout.index');
+Route::get('/checkout', 'CheckoutController@index')->name('checkout.index')->middleware('auth'); //決済ボタンを押した際、ユーザーがログインしていなければ、ログイン画面へ遷移する
 Route::post('/checkout', 'CheckoutController@store')->name('checkout.store');
-// Route::view('/checkout', 'checkout');
-Route::get('/thankyou', 'ConfirmationController@index')->name('confirmation.index');
-// Route::view('/thankyou', 'thankyou');
 
+// ゲストで購入する場合のルーティング
+Route::get('/guestCheckout', 'CheckoutController@index')->name('guestCheckout.index');
+
+//購入完了画面
+Route::get('/thankyou', 'ConfirmationController@index')->name('confirmation.index');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');

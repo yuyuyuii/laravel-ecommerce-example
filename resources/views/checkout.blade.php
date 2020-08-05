@@ -25,7 +25,7 @@
           <ul>
             @foreach($errors->all() as $error)          
             <li>
-              {{ $error }}
+              {{!! $error !!}} <!-- エスケープ解除 -->
             </li>
             @endforeach
           </ul>
@@ -40,7 +40,11 @@
 
                     <div class="form-group">
                         <label for="email">Email Address</label>
-                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                        @if (auth()->user())
+                          <input type="email" class="form-control" id="email" name="email"value="{{ auth()->user()->email }}" readonly><!-- ログインしたユーザーのアドレスを使用する -->
+                        @else
+                          <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}" required>
+                        @endif
                     </div>
                     <div class="form-group">
                         <label for="name">Name</label>
