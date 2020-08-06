@@ -10,6 +10,9 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 // use Cartalyst\Stripe\Stripe;
 use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Cartalyst\Stripe\Exception\CardErrorException;
+use App\OrderProduct;
+use App\Order;
+
 class CheckoutController extends Controller
 {
     /**
@@ -79,15 +82,19 @@ class CheckoutController extends Controller
                     'discount' => collect(session()->get('coupon'))->toJson(), //クーポン情報を追加
                 ], 
             ]);
+            //DBに登録
+            $this->addToOrderTables($request, null);
 
-        // 成功したらカートの中身を削除し、決済完了画面へ
+            // 成功したらカートの中身を削除し、決済完了画面へ
         Cart::instance('default')->destroy();
         //使用したクーポンコードも削除
         session()->forget('coupon');
         // return back()->with('success_message', '決済完了しました！');
         return redirect()->route('confirmation.index')->with('success_message','決済完了しました！' );
       } catch (CardErrorException $e) {
-        return back()->withErrors('Error!'.$e->getMessage());
+        //DBに登録できなかったら、エラーをふくめてDBに登録しておく
+          $this->addToOrderTables($request, $e->getMessage());
+          return back()->withErrors('Error!'.$e->getMessage());
       }
     }
 
@@ -151,5 +158,36 @@ class CheckoutController extends Controller
         'newTax' => $newTax,
         'newTotal' => $newTotal,
       ]);
+    }
+
+    private function addToOrderTables($request, $error)
+    {
+      //orderテーブルにinsert
+    $order = Order::create([
+      'user_id' => auth()->user() ? auth()->user()->id : null,          
+      'billing_email' => $request->email,
+      'billing_name' => $request->name,
+      'billing_address' => $request->address, 
+      'billing_city' => $request->city,
+      'billing_province' => $request->province,
+      'billing_postalcode' => $request->postalcode,
+      'billing_phone' => $request->phone,
+      'billing_name_on_card' => $request->name_on_card, 
+      'billing_discount' => $this->getNumbers()->get('discount'),
+      'billing_discount_code' => $this->getNumbers()->get('discount_code'),
+      'billing_subtotal' => $this->getNumbers()->get('newSubTotal'),
+      'billing_tax' => $this->getNumbers()->get('newTax'),
+      'billing_total' => $this->getNumbers()->get('newTotal'),
+      'error' => $error,
+      ]);
+
+      //order_productにinsert
+      foreach (Cart::content() as $item) { //カートの中身を取得して、商品の個数分オーダーIDと商品IDを登録していく
+        OrderProduct::create([
+          'order_id' => $order->id,
+          'product_id' => $item->id,
+          'quantity' => $item->qty,
+        ]);
+      }
     }
 }
