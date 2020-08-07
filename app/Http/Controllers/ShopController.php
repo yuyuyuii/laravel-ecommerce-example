@@ -122,4 +122,22 @@ class ShopController extends Controller
     {
         //
     }
+
+
+    public function search(Request $request)
+    {
+      //最低3文字で検索
+      $request->validate([
+        'search' => 'required|min:3', 
+      ]);
+      $pagination = 10;
+      $query = $request->search;
+      //商品を名前or詳細 or説明文で曖昧検索する
+      $results = Product::where('name', 'like', "%$query%")
+        ->orWhere('details', 'like', "%$query%" )
+        ->orWhere('description', 'like', "%$query%" )->paginate($pagination);
+      return view('searchResult')->with([
+        'results' => $results,
+      ]);
+    }
 }

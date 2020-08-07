@@ -14,9 +14,25 @@
             <i class="fa fa-chevron-right breadcrumb-separator"></i>
             <a href="{{ route('shop.index')}}">Shop</a>
         </div>
+        <div>
+          @include('partials.search')
+        </div>
+        
     </div> <!-- end breadcrumbs -->
 
     <div class="products-section container">
+          @if( count($errors) > 0 )
+        <div class="spacer"></div>
+        <div class="alert alert-danger">
+          <ul>
+            @foreach($errors->all() as $error)          
+            <li>
+              {!! $error !!} <!-- エスケープ解除 -->
+            </li>
+            @endforeach
+          </ul>
+        </div>
+      @endif
         <div class="sidebar">
             <h3>By Category</h3>
             <ul>
@@ -36,6 +52,9 @@
         <div>
           <div class="products-header">
             <h1 class="stylish-heading">{{ $categoryName }}</h1>
+            <div>
+            
+            </div>
             <div>
               <strong>Price</strong>
               <a href="{{ route('shop.index', ['category' => request()->category, 'sort' => 'low_high']) }}">価格が低い順</a>｜
