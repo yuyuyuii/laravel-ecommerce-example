@@ -4,6 +4,9 @@
     <li><a href="{{ route('login') }}">Login</a></li>
     @else
     <li>
+      <a href="{{ route('user.edit', auth()->user()->id) }}">My Page</a>
+    </li>    
+    <li>
       <a href="{{ route('logout') }}"
           onclick="event.preventDefault();
                     document.getElementById('logout-form').submit();">

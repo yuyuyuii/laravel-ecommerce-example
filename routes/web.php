@@ -45,6 +45,15 @@ Route::group(['prefix' => 'admin'], function () {
 //検索
 Route::get('/search', 'ShopController@search')->name('shop.search');
 
+//mypage
+// Route::get('/mypage/{id}', 'UsersController@edit')->name('user.edit');
+Route::middleware('auth')->group(function(){
+  Route::get('/mypage', 'UsersController@edit')->name('user.edit');
+  Route::patch('/mypage', 'UsersController@update')->name('user.update');
+});
+
+
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
