@@ -42,6 +42,9 @@ Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();
 });
 
+//検索
+Route::get('/search', 'ShopController@search')->name('shop.search');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
