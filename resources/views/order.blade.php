@@ -87,7 +87,6 @@
                                 </div>
                             </div>
                         @endforeach
-
                     </div>
                 </div> <!-- end order-container -->
                 @endforeach
