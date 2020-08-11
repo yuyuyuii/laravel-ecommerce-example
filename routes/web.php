@@ -50,8 +50,6 @@ Route::get('/search', 'ShopController@search')->name('shop.search');
 Route::middleware('auth')->group(function(){
   Route::get('/mypage', 'UsersController@edit')->name('user.edit');
   Route::patch('/mypage', 'UsersController@update')->name('user.update');
-  Route::get('/orders', 'OrdersController@index')->name('order.index');
-  Route::get('/orders/{order}', 'OrdersController@show')->name('order.show');
 });
 
 
