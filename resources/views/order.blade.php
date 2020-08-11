@@ -50,18 +50,47 @@
             <h1 class="stylish-heading">注文履歴</h1>
           </div>
           <div>
-            @foreach($orders as $order)
-              <div>{{ $order->id }}</div>
-              <div><a href="{{ route('order.show', $order->id) }}">注文詳細</a></div>
-              <div>{{ presentPrice($order->billing_total) }}</div>
-                @foreach( $order->products as $product)
-                  <div>{{ $product->name }}</div>
+                @foreach ($orders as $order)
+                <div class="order-container">
+                    <div class="order-header">
+                        <div class="order-header-items">
+                            <div>
+                                <div class="uppercase font-bold">Order Placed</div>
+                                <div>{{ $order->created_at }}</div>
+                            </div>
+                            <div>
+                                <div class="uppercase font-bold">Order ID</div>
+                                <div>{{ $order->id }}</div>
+                            </div><div>
+                                <div class="uppercase font-bold">Total</div>
+                                <div>{{ presentPrice($order->billing_total) }}</div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="order-header-items">
+                                <div><a href="{{ route('order.show', $order->id) }}">Order Details</a></div>
+                                <div>|</div>
+                                <div><a href="#">Invoice</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="order-products">
+                        @foreach ($order->products as $product)
+                            <div class="order-product-item">
+                                <div><img src="{{ productImage($product->image) }}" alt="Product Image"></div>
+                                <div>
+                                    <div>
+                                        <a href="{{ route('shop.show', $product->slug) }}">{{ $product->name }}</a>
+                                    </div>
+                                    <div>{{ presentPrice($product->price) }}</div>
+                                    <div>Quantity: {{ $product->pivot->quantity }}</div>
+                                </div>
+                            </div>
+                        @endforeach
 
-                  <div><img src="{{ productImage($product->image) }}" alt=""></div>
+                    </div>
+                </div> <!-- end order-container -->
                 @endforeach
-                <div class="spacer"></div>
-            @endforeach
-          </div>
         </div>
     
     </div>
