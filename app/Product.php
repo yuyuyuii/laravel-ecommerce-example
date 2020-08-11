@@ -21,4 +21,8 @@ class Product extends Model
   {
     return $this->belongsToMany('App\Category');
   }  
+
+  protected $fillable = [
+    'quantity'
+  ];
 }

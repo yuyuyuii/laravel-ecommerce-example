@@ -12,6 +12,7 @@ use Cartalyst\Stripe\Laravel\Facades\Stripe;
 use Cartalyst\Stripe\Exception\CardErrorException;
 use App\OrderProduct;
 use App\Order;
+use App\Product;
 
 class CheckoutController extends Controller
 {
@@ -82,10 +83,12 @@ class CheckoutController extends Controller
                     'discount' => collect(session()->get('coupon'))->toJson(), //クーポン情報を追加
                 ], 
             ]);
-            //DBに登録
-            $this->addToOrderTables($request, null);
-
-            // 成功したらカートの中身を削除し、決済完了画面へ
+        //DBに登録
+        $this->addToOrderTables($request, null);
+        
+        //商品テーブルから購入した商品の個数を引く
+        $this->decreaseQuantity();
+        // 成功したらカートの中身を削除し、決済完了画面へ
         Cart::instance('default')->destroy();
         //使用したクーポンコードも削除
         session()->forget('coupon');
@@ -189,5 +192,18 @@ class CheckoutController extends Controller
           'quantity' => $item->qty,
         ]);
       }
+      return $order;
     }
+  
+  private function decreaseQuantity()
+  {
+    // カートの中身をループさせて商品IDを取得
+    foreach(Cart::content() as $item){
+      $product = Product::find($item->model->id);
+
+      //商品在庫を更新する
+      $product->update(['quantity' => $product->quantity - $item->qty]);
+    }
+    
+  }
 }
