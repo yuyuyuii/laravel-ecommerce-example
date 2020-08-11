@@ -1,5 +1,6 @@
 @extends('layout')
 
+@section('title', 'my-profile')
 @section('extra-css')
 
 @endsection
@@ -10,7 +11,7 @@
         <div class="container">
             <a href="/">Home</a>
             <i class="fa fa-chevron-right breadcrumb-separator"></i>
-            <a href="{{ route('shop.index')}}">Shop</a>
+            <a href="{{ route('user.edit')}}">My Profile</a>
         </div>
         <div>
           @include('partials.search')
@@ -38,8 +39,8 @@
 
         <div class="sidebar">
           <ul>
-            <li class="activi"><a href="{{ route('user.edit') }}">My Profile</a></li>
-            <li ><a href="#">注文履歴</a></li>
+            <li class="active"><a href="{{ route('user.edit') }}">My Profile</a></li>
+            <li ><a href="{{ route('order.index') }}">注文履歴</a></li>
           </ul>
         </div> <!-- end sidebar -->
 
