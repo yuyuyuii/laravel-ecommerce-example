@@ -20,6 +20,7 @@
 @import 'components/alerts';
 @import 'components/pagination';
 @import 'components/table';
+@import 'components/badge';
 
 // Layout
 @import 'layout/header';
@@ -32,3 +33,5 @@
 @import 'pages/cart';
 @import 'pages/checkout';
 @import 'pages/thankyou';
+@import 'pages/my-profile';
+@import 'pages/my-orders'; 

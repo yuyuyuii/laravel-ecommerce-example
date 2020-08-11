@@ -74,7 +74,7 @@
                             </form>
                         </div>
                         <div>
-                            <select class="quantity" data-id="{{ $item->rowId }}"><!-- data属性に商品IDを指定するとJSで商品IDが取れるようになる-->
+                            <select class="quantity" data-id="{{ $item->rowId }}" data-productQuantity="{{ $item->model->quantity}}"> <!-- data属性に商品IDを指定するとJSで商品IDが取れるようになる. 商品の在庫を取得する為に、data属性を追加-->
                             @for($i = 1; $i <= 5; $i++)
                               <option {{ $item->qty == $i ? 'selected' : '' }}>{{ $i }} </option>
                             @endfor
@@ -209,18 +209,21 @@
         // alert('change');
         //商品IDを取得
         const id = element.getAttribute('data-id');
+        const productQuantity = element.getAttribute('data-productQuantity');
         axios.patch(`/cart/${id}`, {
-          quantity: this.value //quantityの値
+          quantity: this.value, //quantityの値
+          productQuantity: productQuantity
         })
         .then(function (response) {
           console.log(response);
           window.location.href = '{{ route('cart.index') }}'
         })
         .catch(function (error) {
-          console.log(error);
-          window.location.href = '{{ route('cart.index') }}'
+
+          // console.log(error);
+          // window.location.href = '{{ route('cart.index') }}'
         });
-      })
+      });
     })
 
   })();

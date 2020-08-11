@@ -92,6 +92,12 @@ class CartController extends Controller
         session()->flash('errors', collect(['1個から5個の間で選んでください。']));
         return response()->json(['success' => false], 400);
       }
+
+      if($request->quantity > $request->productQuantity){
+        session()->flash('errors', collect(['在庫切れです。']));
+        return response()->json(['success' => false], 400);
+      }
+
       //カート内で商品の個数が変更されたら
       Cart::update($id, $request->quantity);
       session()->flash('success_message', '個数を変更しました！');
