@@ -17,7 +17,7 @@
         <div>
           @include('partials.search')
         </div>
-        
+
     </div> <!-- end breadcrumbs -->
         @if( session()->has('success_message'))
           <div class="alert alert-success">
@@ -91,7 +91,7 @@
                 </div> <!-- end order-container -->
                 @endforeach
         </div>
-    
+
     </div>
 
 @endsection
